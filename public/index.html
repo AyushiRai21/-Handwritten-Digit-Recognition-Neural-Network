@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Digit Recognition AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+        }
+        .header-title {
+            color: #0d6efd;
+            font-weight: 700;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            background: #ffffff;
+            padding: 24px;
+        }
+        #draw-canvas {
+            border: 3px solid #0d6efd;
+            border-radius: 12px;
+            cursor: crosshair;
+            background-color: #000;
+            touch-action: none;
+        }
+        #preview-canvas {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #000;
+            image-rendering: pixelated;
+        }
+        .pred-box {
+            background: #eef5ff;
+            border: 2px solid #0d6efd;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .pred-digit {
+            font-size: 5rem;
+            font-weight: 800;
+            color: #0d6efd;
+            line-height: 1;
+        }
+        .pred-conf {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #198754;
+        }
+        .bar-container {
+            margin-bottom: 8px;
+        }
+        .progress-bar-custom {
+            height: 16px;
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Title Banner -->
+        <div class="text-center mb-4">
+            <h1 class="header-title">✍️ Handwritten Digit Recognition AI</h1>
+            <p class="text-secondary lead">Deep Learning Gateway Project • Real-Time In-Browser Keras Neural Network</p>
+        </div>
+
+        <!-- Main Content Row -->
+        <div class="row g-4 mb-5">
+            <!-- Canvas Column -->
+            <div class="col-lg-4 text-center">
+                <div class="card-custom h-100">
+                    <h5 class="fw-bold mb-3">Drawing Canvas</h5>
+                    <canvas id="draw-canvas" width="280" height="280"></canvas>
+                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                        <label class="form-label mb-0 fw-semibold">Brush Size:</label>
+                        <input type="range" class="form-range w-50" id="brush-size" min="12" max="32" value="22">
+                    </div>
+                    <button class="btn btn-outline-danger w-100 mt-3 fw-bold" id="btn-clear">🧹 Clear Canvas</button>
+                </div>
+            </div>
+
+            <!-- Preprocessed Input Preview Column -->
+            <div class="col-lg-3 text-center">
+                <div class="card-custom h-100 d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="fw-bold mb-3">Preprocessed (28×28)</h5>
+                    <canvas id="preview-canvas" width="140" height="140"></canvas>
+                    <p class="text-muted small mt-3">Aspect-ratio scaled & centered by center of mass (MNIST spec)</p>
+                </div>
+            </div>
+
+            <!-- Live Prediction Column -->
+            <div class="col-lg-5">
+                <div class="card-custom h-100">
+                    <h5 class="fw-bold mb-3">Live Model Prediction</h5>
+                    
+                    <div class="pred-box mb-4" id="pred-box">
+                        <div class="text-secondary fw-semibold">Predicted Digit</div>
+                        <div class="pred-digit" id="pred-digit">?</div>
+                        <div class="pred-conf" id="pred-conf">Draw on canvas</div>
+                    </div>
+
+                    <h6 class="fw-bold mb-2">Class Probabilities (0 - 9)</h6>
+                    <div id="probabilities-list">
+                        <!-- Bars injected dynamically by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Analytics Section -->
+        <div class="card-custom mb-4">
+            <h4 class="fw-bold mb-4">📊 Model Training & Evaluation Dashboard</h4>
+            <div class="row g-4">
+                <div class="col-md-6 text-center">
+                    <h6>Training & Validation Loss / Accuracy Curves</h6>
+                    <img src="loss_accuracy_curves.png" class="img-fluid rounded border" alt="Loss Curves" onerror="this.style.display='none'">
+                </div>
+                <div class="col-md-6 text-center">
+                    <h6>Test Dataset Confusion Matrix Heatmap</h6>
+                    <img src="confusion_matrix.png" class="img-fluid rounded border" alt="Confusion Matrix" onerror="this.style.display='none'">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <h6>Common Misclassifications Analysis</h6>
+                    <img src="misclassifications.png" class="img-fluid rounded border" alt="Misclassifications" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
