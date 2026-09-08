@@ -47,16 +47,6 @@ Standard MNIST training images are strictly centered **28×28 grayscale images**
 
 Our vision pipeline transforms raw canvas inputs through 5 steps:
 
-```mermaid
-flowchart LR
-    A[Raw Canvas Input] --> B[Grayscale & Inversion]
-    B --> C[Bounding Box Crop]
-    C --> D[Aspect-Ratio Resize to 20x20]
-    D --> E[Pad to 28x28]
-    E --> F[Center-of-Mass Shift cv2.moments]
-    F --> G[Normalized [0, 1] Model Feed]
-```
-
 1. **Grayscale Conversion & Inversion**: Auto-detects stroke contrast to produce white (255) strokes on black (0) background.
 2. **Bounding Box Isolation**: Crops non-zero drawing bounds (`cv2.boundingRect`).
 3. **Aspect-Ratio Scaling**: Resizes digit into a standard 20×20 box preserving shape proportions.
